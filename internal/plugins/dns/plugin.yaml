@@ -22,6 +22,8 @@ models:
     overrides:
       # Incremented by the plugin whenever the zone or its records change.
       soa_serial: { volatile: true }
+      parental_agents:
+        description: Parental agents for DNSSEC. NetBox DNS keeps them only on zones with a dnssec_policy.
   - endpoint: records
     name: record
     overrides:
@@ -29,6 +31,9 @@ models:
       fqdn: { volatile: true }
   - endpoint: zonetemplates
     name: zone_template
+    overrides:
+      parental_agents:
+        description: Parental agents for DNSSEC. NetBox DNS keeps them only on zones with a dnssec_policy.
   - endpoint: recordtemplates
     name: record_template
   - endpoint: registrars

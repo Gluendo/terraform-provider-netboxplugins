@@ -58,6 +58,8 @@ resource "netboxplugins_dns_zone" "zone" {
   status      = "active"
   default_ttl = %[3]d
   registrar   = netboxplugins_dns_registrar.registrar.id
+  dnssec_policy   = netboxplugins_dns_dnssec_policy.policy.id
+  parental_agents = ["192.0.2.53", "192.0.2.54"]
   admin_c     = netboxplugins_dns_registration_contact.admin.id
   tags        = [netbox_tag.dns.name]
 }
@@ -87,7 +89,7 @@ resource "netboxplugins_dns_zone_template" "template" {
 
 resource "netboxplugins_dns_dnssec_key_template" "ksk" {
   name      = "%[1]s-ksk"
-  type      = "KSK"
+  type      = "CSK"
   algorithm = "ECDSAP256SHA256"
 }
 
@@ -126,7 +128,7 @@ func TestAccDNS(t *testing.T) {
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttrWith("netboxplugins_dns_zone.zone", "id", capture(&zoneID)),
 				resource.TestCheckResourceAttrWith("netboxplugins_dns_record.www", "id", capture(&recordID)),
-				resource.TestCheckResourceAttrWith("netboxplugins_dns_nameserver.ns1", "id", capture(&ns2ID)),
+				resource.TestCheckResourceAttrWith("netboxplugins_dns_nameserver.ns2", "id", capture(&ns2ID)),
 				resource.TestCheckResourceAttr("netboxplugins_dns_zone.zone", "nameservers.#", "2"),
 				resource.TestCheckResourceAttr("netboxplugins_dns_zone.zone", "status", "active"),
 				resource.TestCheckResourceAttrSet("netboxplugins_dns_zone.zone", "soa_serial"),
@@ -160,14 +162,19 @@ func TestAccDNS(t *testing.T) {
 	steps = append(steps, acctest.DriftSteps(cfg, func() {
 		ns, _ := strconv.ParseInt(ns2ID, 10, 64)
 		acctest.Patch(t, path("zone", zoneID), map[string]any{
-			"nameservers": []int64{ns},
-			"status":      "parked",
-			"default_ttl": 60,
-			"tags":        []any{},
+			"nameservers":     []int64{ns},
+			"soa_mname":       ns,                     // reference
+			"parental_agents": []string{"192.0.2.99"}, // string list
+			"status":          "parked",
+			"default_ttl":     60,
+			"tags":            []any{},
 		})
 		acctest.Patch(t, path("record", recordID), map[string]any{"value": "198.51.100.1", "ttl": 900})
 	}, resource.ComposeAggregateTestCheckFunc(
 		resource.TestCheckResourceAttr("netboxplugins_dns_zone.zone", "nameservers.#", "2"),
+		resource.TestCheckResourceAttrPair("netboxplugins_dns_zone.zone", "soa_mname", "netboxplugins_dns_nameserver.ns1", "id"),
+		resource.TestCheckResourceAttr("netboxplugins_dns_zone.zone", "parental_agents.#", "2"),
+		resource.TestCheckResourceAttr("netboxplugins_dns_zone.zone", "parental_agents.0", "192.0.2.53"),
 		resource.TestCheckResourceAttr("netboxplugins_dns_zone.zone", "status", "active"),
 		resource.TestCheckResourceAttr("netboxplugins_dns_zone.zone", "default_ttl", "3600"),
 		resource.TestCheckResourceAttr("netboxplugins_dns_zone.zone", "tags.#", "1"),

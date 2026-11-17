@@ -74,6 +74,10 @@ func TestToAPI(t *testing.T) {
 		want any
 	}{
 		{"string", model.Field{Kind: model.KindString}, "web", "web"},
+		{"int", model.Field{Kind: model.KindInt}, int64(3600), int64(3600)},
+		{"float", model.Field{Kind: model.KindFloat}, 1.5, 1.5},
+		{"bool", model.Field{Kind: model.KindBool}, true, true},
+		{"string list", model.Field{Kind: model.KindStringList}, []string{"a"}, []string{"a"}},
 		{"choice", model.Field{Kind: model.KindChoice}, "tcp", "tcp"},
 		{"ref", model.Field{Kind: model.KindRef}, int64(7), int64(7)},
 		{"ref set", model.Field{Kind: model.KindRefSet}, []int64{2, 9}, []int64{2, 9}},
