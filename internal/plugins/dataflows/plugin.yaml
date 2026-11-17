@@ -1,0 +1,27 @@
+# netbox-data-flows: network flows between IP addresses, ranges and prefixes.
+name: dataflows
+title: NetBox Data Flows
+package: netbox-data-flows
+status_key: netbox_data_flows
+api_prefix: data-flows
+maturity: experimental
+compatibility:
+  - netbox: ">= 4.6.0, < 4.7.0"
+    plugin: ">= 1.5.2, < 1.6.0"
+  - netbox: ">= 4.7.0, < 4.8.0"
+    plugin: ">= 1.5.4, < 1.7.0"
+models:
+  - endpoint: application-roles
+    name: application_role
+  - endpoint: applications
+    name: application
+  - endpoint: dataflow-groups
+    name: group
+  - endpoint: dataflows
+    name: flow
+    overrides:
+      # Port order carries no meaning.
+      source_ports: { set: true }
+      destination_ports: { set: true }
+  - endpoint: objectalias
+    name: object_alias

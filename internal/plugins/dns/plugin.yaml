@@ -1,0 +1,35 @@
+# netbox-plugin-dns: DNS views, name servers, zones, records and registration data.
+# The plugin's /prefixes/ endpoint exposes core IPAM prefixes; those belong to
+# the core NetBox provider and are not generated here.
+name: dns
+title: NetBox DNS
+package: netbox-plugin-dns
+status_key: netbox_dns
+api_prefix: netbox-dns
+maturity: experimental
+compatibility:
+  - netbox: ">= 4.6.0, < 4.7.0"
+    plugin: ">= 1.6.0, < 1.7.0"
+  - netbox: ">= 4.7.0, < 4.8.0"
+    plugin: ">= 1.7.0, < 1.8.0"
+models:
+  - endpoint: views
+    name: view
+  - endpoint: nameservers
+    name: nameserver
+  - endpoint: zones
+    name: zone
+  - endpoint: records
+    name: record
+  - endpoint: zonetemplates
+    name: zone_template
+  - endpoint: recordtemplates
+    name: record_template
+  - endpoint: registrars
+    name: registrar
+  - endpoint: contacts
+    name: registration_contact
+  - endpoint: dnsseckeytemplates
+    name: dnssec_key_template
+  - endpoint: dnssecpolicies
+    name: dnssec_policy

@@ -1,0 +1,8 @@
+# NetBox with the plugins under test. Build args come from a profile in profiles/.
+ARG NETBOX_IMAGE
+FROM ${NETBOX_IMAGE}
+ARG PLUGIN_REQUIREMENTS
+RUN /usr/local/bin/uv pip install ${PLUGIN_REQUIREMENTS}
+COPY plugins.py /etc/netbox/config/plugins.py
+RUN SECRET_KEY="build-only-build-only-build-only-build-only-build-only" \
+    /opt/netbox/venv/bin/python /opt/netbox/netbox/manage.py collectstatic --no-input >/dev/null
