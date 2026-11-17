@@ -1,0 +1,23 @@
+---
+page_title: "{{.Name}} {{.Type}} - {{.ProviderName}}"
+description: |-
+{{ .Description | plainmarkdown | trimspace | prefixlines "  " }}
+---
+
+# {{.Name}} ({{.Type}})
+
+{{ .Description | trimspace }}
+
+## Example Usage
+
+```terraform
+data "{{.Name}}" "by_id" {
+  id = 42
+}
+
+data "{{.Name}}" "by_filter" {
+  filters = { name = "example" }
+}
+```
+
+{{ .SchemaMarkdown | trimspace }}

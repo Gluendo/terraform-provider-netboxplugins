@@ -49,6 +49,7 @@ type fieldOverride struct {
 	Set         *bool  `yaml:"set"`
 	Sensitive   *bool  `yaml:"sensitive"`
 	ReadOnly    *bool  `yaml:"read_only"`
+	Volatile    *bool  `yaml:"volatile"`
 	Description string `yaml:"description"`
 }
 
@@ -134,6 +135,9 @@ func buildModel(pf *pluginFile, doc *schemaDoc, me modelEntry) (*model.Model, er
 			}
 			if ov.Sensitive != nil {
 				f.Sensitive = *ov.Sensitive
+			}
+			if ov.Volatile != nil {
+				f.Volatile = *ov.Volatile
 			}
 			if ov.ReadOnly != nil {
 				f.ReadOnly = *ov.ReadOnly
@@ -272,6 +276,7 @@ var Plugin = &model.Plugin{
 				{{- if .ReadOnly}}, ReadOnly: true{{end}}
 				{{- if .WriteOnly}}, WriteOnly: true{{end}}
 				{{- if .Set}}, Set: true{{end}}
+				{{- if .Volatile}}, Volatile: true{{end}}
 				{{- if .Sensitive}}, Sensitive: true{{end}}
 				{{- if .Choices}}, Choices: {{strs .Choices}}{{end}}
 				{{- if .Description}}, Description: {{q .Description}}{{end}}},

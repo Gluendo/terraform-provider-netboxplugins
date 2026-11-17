@@ -19,8 +19,14 @@ models:
     name: nameserver
   - endpoint: zones
     name: zone
+    overrides:
+      # Incremented by the plugin whenever the zone or its records change.
+      soa_serial: { volatile: true }
   - endpoint: records
     name: record
+    overrides:
+      # Derived from the record name and zone.
+      fqdn: { volatile: true }
   - endpoint: zonetemplates
     name: zone_template
   - endpoint: recordtemplates

@@ -92,6 +92,9 @@ func resourceFlags(f *model.Field) flags {
 		return flags{required: true}
 	case f.WriteOnly:
 		return flags{optional: true}
+	case f.Volatile:
+		// The plugin rewrites it on updates: unknown in update plans.
+		return flags{optional: true, computed: true}
 	default:
 		return flags{optional: true, computed: true, keepState: true}
 	}

@@ -1,0 +1,6 @@
+# Core, tools and test infrastructure (ADR-0008).
+*                              @ndreno
+
+# Plugin folders: one line per folder, owned by the plugin's contributors.
+/internal/plugins/dataflows/   @ndreno
+/internal/plugins/dns/         @ndreno

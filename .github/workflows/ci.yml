@@ -1,0 +1,73 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+      # tfplugindocs reads the provider schema through a Terraform binary.
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
+      - run: go test ./...
+      - uses: golangci/golangci-lint-action@v8
+        with:
+          version: v2.13.2
+      - run: make check-generate
+
+  packages:
+    runs-on: ubuntu-latest
+    outputs:
+      pkgs: ${{ steps.select.outputs.pkgs }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - id: select
+        run: |
+          base="${{ github.event_name == 'pull_request' && format('origin/{0}', github.base_ref) || '' }}"
+          echo "pkgs=$(./scripts/acc-packages.sh "$base")" >> "$GITHUB_OUTPUT"
+
+  acceptance:
+    needs: [unit, packages]
+    if: needs.packages.outputs.pkgs != ''
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: [netbox-4.6, netbox-4.7]
+        cli: [opentofu, terraform]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+      - if: matrix.cli == 'opentofu'
+        uses: opentofu/setup-opentofu@v1
+        with:
+          tofu_wrapper: false
+      - if: matrix.cli == 'terraform'
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
+      - run: CONTAINER_ENGINE=docker ./testenv/up.sh ${{ matrix.profile }}
+      - name: acceptance tests
+        run: |
+          . testenv/.env.${{ matrix.profile }}
+          if [ "${{ matrix.cli }}" = opentofu ]; then
+            export TF_ACC_TERRAFORM_PATH="$(command -v tofu)" TF_ACC_PROVIDER_HOST=registry.opentofu.org
+          else
+            export TF_ACC_TERRAFORM_PATH="$(command -v terraform)"
+          fi
+          TF_ACC=1 go test -p 1 ${{ needs.packages.outputs.pkgs }} -run TestAcc -count=1 -timeout 60m -v

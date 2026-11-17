@@ -36,6 +36,7 @@ type Field struct {
 	ReadOnly    bool // set by the server; exported as a computed attribute
 	WriteOnly   bool // accepted on write, never returned by the server
 	Set         bool // int_list or string_list stored as a set
+	Volatile    bool // the plugin rewrites it when the object changes
 	Sensitive   bool
 	Choices     []string
 	Description string

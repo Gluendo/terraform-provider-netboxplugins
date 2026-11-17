@@ -38,6 +38,8 @@ Plugin models have optional fields with server defaults and fields the plugin co
 
 For `custom_fields`, the rule applies per key: keys in the configuration are managed and compared; other custom fields are left alone.
 
+An optional attribute keeps its state value in plans. A field the plugin rewrites whenever the object changes (a DNS zone serial, a record's FQDN) is marked `volatile` in `plugin.yaml`: it shows as known after apply in update plans instead, since keeping the old value would contradict what NetBox returns.
+
 ## Consequences
 
 ### Positive
@@ -54,7 +56,7 @@ For `custom_fields`, the rule applies per key: keys in the configuration are man
 
 ## Actions
 
-- Schema builder: optional attributes are optional, computed, and keep their state value when unknown.
+- Schema builder: optional attributes are optional, computed, and keep their state value when unknown, except `volatile` ones.
 - Engine: updates send changed attributes only; custom fields are compared per configured key.
 
 ## References
