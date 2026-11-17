@@ -43,7 +43,7 @@ data "netboxplugins_dns_zone_template" "by_filter" {
 - `name` (String)
 - `nameservers` (Set of Number) Nameservers for the zone. NetBox IDs of the referenced objects.
 - `owner` (Number) NetBox ID of the referenced object.
-- `parental_agents` (List of String)
+- `parental_agents` (List of String) Parental agents for DNSSEC. NetBox DNS keeps them only on zones with a dnssec_policy.
 - `record_templates` (Set of Number) Record templates assigned to the zone template. NetBox IDs of the referenced objects.
 - `registrant` (Number) Registrant of the domain. NetBox ID of the referenced object.
 - `registrar` (Number) Registrar the domain is registered with. NetBox ID of the referenced object.

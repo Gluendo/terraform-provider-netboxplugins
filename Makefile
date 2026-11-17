@@ -13,9 +13,10 @@ test:
 lint:
 	golangci-lint run ./...
 
-# Regenerates plugin descriptors and docs.
+# Regenerates plugin descriptors, then the docs built from them.
 generate:
-	go generate ./...
+	go generate ./internal/...
+	go generate .
 
 # Fails when a generated file is out of date (success criterion SC12).
 check-generate: generate
