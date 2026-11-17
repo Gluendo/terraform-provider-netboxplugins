@@ -58,7 +58,7 @@ NetBox publishes its OpenAPI schema at `/api/schema/`. It includes every install
 
 **Justification**: The format difference follows NetBox conventions that the schema states explicitly, so it can be handled once.
 
-Kinds: `string`, `int`, `float`, `bool`, `choice`, `ref`, `ref_set`, `int_list`, `string_list`, `tags`, `custom_fields`, `json`. Server-set scalar and choice fields are exported as computed attributes and never compared.
+Kinds: `string`, `int`, `float`, `bool`, `choice`, `ref`, `ref_set`, `int_list`, `string_list`, `tags`, `custom_fields`, `json`. Server-set scalar, choice and reference fields are exported as computed attributes and never compared. Server-set counters (`*_count`) and reverse-relation lists are not exported: they change whenever other objects change.
 
 ## Consequences
 

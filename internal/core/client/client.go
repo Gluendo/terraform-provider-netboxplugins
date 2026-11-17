@@ -87,6 +87,11 @@ func authorization(token string) string {
 	return "Token " + token
 }
 
+// Close releases idle connections. A client used for a few calls and then
+// dropped must be closed, or its keep-alive connections stay open on the
+// server.
+func (c *Client) Close() { c.http.CloseIdleConnections() }
+
 // Get returns one object.
 func (c *Client) Get(ctx context.Context, path string) (map[string]any, error) {
 	return c.object(ctx, http.MethodGet, path, nil)

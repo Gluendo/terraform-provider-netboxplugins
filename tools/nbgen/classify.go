@@ -176,7 +176,9 @@ func (d *schemaDoc) classifyWritable(name string, w, r node, hasRead bool) (mode
 // classifyReadOnly assigns a kind to a field only present in the read schema.
 // It returns ok=false for fields not worth exporting.
 func (d *schemaDoc) classifyReadOnly(name string, r node) (model.Kind, bool) {
-	if noiseFields[name] || strings.HasPrefix(name, "_") {
+	// Counters and reverse-relation lists change whenever other objects
+	// change; they are not exported (ADR-0002).
+	if noiseFields[name] || strings.HasPrefix(name, "_") || strings.HasSuffix(name, "_count") {
 		return "", false
 	}
 	switch {
@@ -190,7 +192,7 @@ func (d *schemaDoc) classifyReadOnly(name string, r node) (model.Kind, bool) {
 		case ri.refName == "NestedTag":
 			return model.KindTags, true
 		case ri.isObjectRef():
-			return model.KindRefSet, true
+			return "", false
 		case ri.typ() == "integer":
 			return model.KindIntList, true
 		case ri.typ() == "string":

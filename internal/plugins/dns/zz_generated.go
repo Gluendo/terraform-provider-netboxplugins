@@ -46,7 +46,6 @@ var Plugin = &model.Plugin{
 				{Name: "owner", API: "owner", Kind: model.KindRef},
 				{Name: "tags", API: "tags", Kind: model.KindTags},
 				{Name: "tenant", API: "tenant", Kind: model.KindRef},
-				{Name: "zones", API: "zones", Kind: model.KindRefSet, ReadOnly: true, Description: "Zones served by the authoritative nameserver"},
 			},
 		},
 		{
@@ -89,7 +88,6 @@ var Plugin = &model.Plugin{
 				{Name: "view", API: "view", Kind: model.KindRef, Description: "View the zone belongs to"},
 				{Name: "active", API: "active", Kind: model.KindBool, ReadOnly: true},
 				{Name: "inline_signing", API: "inline_signing", Kind: model.KindString, ReadOnly: true},
-				{Name: "rfc2317_child_zones", API: "rfc2317_child_zones", Kind: model.KindRefSet, ReadOnly: true, Description: "RFC2317 child zones of the zone"},
 				{Name: "rfc2317_parent_zone", API: "rfc2317_parent_zone", Kind: model.KindRef, ReadOnly: true, Description: "RFC2317 parent zone of the zone"},
 			},
 		},
@@ -116,7 +114,6 @@ var Plugin = &model.Plugin{
 				{Name: "zone", API: "zone", Kind: model.KindRef, Required: true, Description: "Zone the record belongs to"},
 				{Name: "absolute_value", API: "absolute_value", Kind: model.KindString, ReadOnly: true},
 				{Name: "active", API: "active", Kind: model.KindBool, ReadOnly: true},
-				{Name: "address_records", API: "address_records", Kind: model.KindRefSet, ReadOnly: true, Description: "Address records related to the PTR"},
 				{Name: "expired", API: "expired", Kind: model.KindString, ReadOnly: true},
 				{Name: "ipam_ip_address", API: "ipam_ip_address", Kind: model.KindRef, ReadOnly: true, Description: "IPAddress linked to the record"},
 				{Name: "ptr_record", API: "ptr_record", Kind: model.KindRef, ReadOnly: true, Description: "PTR record related to an address"},
@@ -166,7 +163,6 @@ var Plugin = &model.Plugin{
 				{Name: "ttl", API: "ttl", Kind: model.KindInt},
 				{Name: "type", API: "type", Kind: model.KindString, Required: true, Choices: []string{"A", "A6", "AAAA", "AFSDB", "AMTRELAY", "APL", "AVC", "BRID", "CAA", "CDNSKEY", "CDS", "CERT", "CNAME", "CSYNC", "DHCID", "DLV", "DNAME", "DNSKEY", "DS", "DSYNC", "EUI48", "EUI64", "GPOS", "HHIT", "HINFO", "HIP", "HTTPS", "IPSECKEY", "ISDN", "KEY", "KX", "L32", "L64", "LOC", "LP", "MB", "MD", "MF", "MG", "MINFO", "MR", "MX", "NAPTR", "NID", "NINFO", "NS", "NSAP", "NSAP_PTR", "NSEC", "NSEC3", "NSEC3PARAM", "NULL", "NXT", "OPENPGPKEY", "PTR", "PX", "RESINFO", "RP", "RRSIG", "RT", "SIG", "SMIMEA", "SOA", "SPF", "SRV", "SSHFP", "SVCB", "TA", "TLSA", "TXT", "TYPE0", "UNSPEC", "URI", "WALLET", "WKS", "X25", "ZONEMD"}},
 				{Name: "value", API: "value", Kind: model.KindString, Required: true},
-				{Name: "zone_templates", API: "zone_templates", Kind: model.KindRefSet, ReadOnly: true, Description: "Zone templates using the record template"},
 			},
 		},
 		{
@@ -229,7 +225,6 @@ var Plugin = &model.Plugin{
 				{Name: "tags", API: "tags", Kind: model.KindTags},
 				{Name: "tenant", API: "tenant", Kind: model.KindRef},
 				{Name: "type", API: "type", Kind: model.KindString, Required: true, Choices: []string{"CSK", "KSK", "ZSK"}},
-				{Name: "policies", API: "policies", Kind: model.KindRefSet, ReadOnly: true, Description: "Policies using this Key Template"},
 			},
 		},
 		{
@@ -265,8 +260,6 @@ var Plugin = &model.Plugin{
 				{Name: "tenant", API: "tenant", Kind: model.KindRef},
 				{Name: "use_nsec3", API: "use_nsec3", Kind: model.KindBool},
 				{Name: "zone_propagation_delay", API: "zone_propagation_delay", Kind: model.KindInt},
-				{Name: "zone_templates", API: "zone_templates", Kind: model.KindRefSet, ReadOnly: true, Description: "Zone templates this policy is assigned to"},
-				{Name: "zones", API: "zones", Kind: model.KindRefSet, ReadOnly: true, Description: "Zones this policy is assigned to"},
 			},
 		},
 	},

@@ -29,7 +29,6 @@ var Plugin = &model.Plugin{
 				{Name: "owner", API: "owner", Kind: model.KindRef},
 				{Name: "slug", API: "slug", Kind: model.KindString, Required: true},
 				{Name: "tags", API: "tags", Kind: model.KindTags},
-				{Name: "application_count", API: "application_count", Kind: model.KindInt, ReadOnly: true},
 			},
 		},
 		{
@@ -45,7 +44,6 @@ var Plugin = &model.Plugin{
 				{Name: "role", API: "role", Kind: model.KindRef},
 				{Name: "tags", API: "tags", Kind: model.KindTags},
 				{Name: "tenant", API: "tenant", Kind: model.KindRef},
-				{Name: "dataflow_count", API: "dataflow_count", Kind: model.KindInt, ReadOnly: true},
 			},
 		},
 		{

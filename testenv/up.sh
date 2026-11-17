@@ -23,7 +23,10 @@ admin_password="acctest-admin"
   -e POSTGRES_DB=netbox -e POSTGRES_USER=netbox -e POSTGRES_PASSWORD=acctest \
   docker.io/library/postgres:16-alpine >/dev/null
 "$engine" run -d --name "${name}-redis" --network "$name" docker.io/library/redis:7-alpine >/dev/null
-"$engine" run -d --name "$name" --network "$name" -p "127.0.0.1:${PORT}:8080" \
+extra_env=()
+for kv in ${NETBOX_EXTRA_ENV:-}; do extra_env+=(-e "$kv"); done
+
+"$engine" run -d --name "$name" --network "$name" -p "127.0.0.1:${PORT}:8080" "${extra_env[@]}" \
   -e DB_HOST="${name}-pg" -e DB_NAME=netbox -e DB_USER=netbox -e DB_PASSWORD=acctest \
   -e REDIS_HOST="${name}-redis" -e REDIS_DATABASE=0 \
   -e REDIS_CACHE_HOST="${name}-redis" -e REDIS_CACHE_DATABASE=1 \

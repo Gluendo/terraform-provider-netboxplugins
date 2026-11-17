@@ -81,6 +81,16 @@ type Plugin struct {
 	Models        []Model
 }
 
+// Model returns the model named name, or nil.
+func (p *Plugin) Model(name string) *Model {
+	for i := range p.Models {
+		if p.Models[i].Name == name {
+			return &p.Models[i]
+		}
+	}
+	return nil
+}
+
 // ListPath is the collection path of a model.
 func (p *Plugin) ListPath(m *Model) string {
 	return fmt.Sprintf("/api/plugins/%s/%s/", p.APIPrefix, m.Endpoint)
