@@ -9,6 +9,8 @@ One provider covers many plugins. Each plugin is a folder under [`internal/plugi
 | [netbox-plugin-dns](https://github.com/peteeckel/netbox-plugin-dns)      | `netboxplugins_dns_*`       | NetBox 4.6 with 1.6.2, NetBox 4.7 with 1.7.3   |
 | [netbox-data-flows](https://github.com/Alef-Burzmali/netbox-data-flows)  | `netboxplugins_dataflows_*` | NetBox 4.6 with 1.5.4, NetBox 4.7 with 1.6.0   |
 
+Published on the [OpenTofu Registry](https://search.opentofu.org/provider/gluendo/netboxplugins) and the [Terraform Registry](https://registry.terraform.io/providers/Gluendo/netboxplugins/latest), with the documentation of every resource and data source.
+
 Status: experimental. Releases are signed with the key in [`release-signing-key.asc`](release-signing-key.asc) (fingerprint `52579951E963FE16C1FFECF79884577BBC23CBE4`).
 
 ## Usage
